@@ -12,7 +12,7 @@ pipeline {
 
                 script {
 
-                    dockerapp = docker.build("fabricioveronez/guia-jenkins:${env.BUILD_ID}", "-f src/Dockerfile .")
+                    dockerapp = docker.build("fabricioveronez/guia-jenkins:${env.BUILD_ID}", "-f ./src/Dockerfile ./src")
 
                 }
 
