@@ -43,9 +43,27 @@ pipeline {
 
         stage("Deploy no Kubernetes") {
 
+            enviroment {
+
+                tag_version = "${env.BUILD_ID}"
+
+            }
+
             steps {
 
                 sh "echo 'Criando o Pod no Cluster...'"
+
+                withKubeConfig([
+
+                    credentialsId: "kubernetesconfig"
+
+                ]) {
+
+                    sh "sed -i 's/{{tag}}/$tag_version/g' ./k8s/deployment.yaml"
+
+                    sh "kubectl apply -f ./k8s/deployment.yaml"
+
+                }
 
             }
 
