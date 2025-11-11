@@ -43,7 +43,7 @@ pipeline {
 
         stage("Deploy no Kubernetes") {
 
-            enviroment {
+            environment {
 
                 tag_version = "${env.BUILD_ID}"
 
