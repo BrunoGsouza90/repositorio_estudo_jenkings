@@ -8,7 +8,13 @@ pipeline {
 
             steps {
 
-                sh 'echo "Executando o comando Docker Build!"'
+                sh "echo 'Executando o comando Docker Build...'"
+
+                script {
+
+                    dockerapp = docker.build("fabricioveronez/guia-jenkins:${env.BUILD_ID}", "-f ./src/Dockerfile")
+
+                }
 
             }
 
@@ -18,7 +24,18 @@ pipeline {
 
             steps {
 
-                sh 'echo "Executando o comando Docker Push!"'
+                sh "echo 'Executando o comando Docker Push...'"
+
+                script {
+
+                    docker.withRegistry("https://registry.hub.docker.com", "dockerhub") {
+                        
+                        dockerapp.push("latest")
+                        dockerapp.push("${env.BUILD_ID}")
+
+                    }
+
+                }
 
             }
 
@@ -28,7 +45,7 @@ pipeline {
 
             steps {
 
-                sh 'echo "Criando o Pod no Cluster!"'
+                sh "echo 'Criando o Pod no Cluster...'"
 
             }
 
